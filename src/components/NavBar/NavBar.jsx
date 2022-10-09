@@ -1,6 +1,7 @@
 import React from "react";
 import CartWidget from "../CartWidget/CartWidget";
 import "./NavBar.css";
+import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
   return (
@@ -16,15 +17,18 @@ const NavBar = () => {
         </span>
       </div>
       <div className="nav-paths text-purple-600">
-        <a href="" className="hover:text-gray-600">
+        <NavLink to="/" className="hover:text-gray-600">
           Home
-        </a>
-        <a href="" className="hover:text-gray-600">
-          Market
-        </a>
-        <a href="" className="hover:text-gray-600">
-          Contact Me
-        </a>
+        </NavLink>
+        <NavLink to="/category/perifericos" className="hover:text-gray-600">
+          Perifericos
+        </NavLink>
+        <NavLink to="/category/monitores" className="hover:text-gray-600">
+          Monitores
+        </NavLink>
+        <NavLink to="/category/camaras" className="hover:text-gray-600">
+          Camaras
+        </NavLink>
         <CartWidget />
       </div>
     </nav>
