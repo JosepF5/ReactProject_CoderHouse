@@ -14,6 +14,7 @@ const ItemDetailContainer = () => {
       .catch((err) => console.log(err))
       .finally(() => setLoading(true));
   }, []);
+  
   return (
     <div>
       {isLoading ? (
