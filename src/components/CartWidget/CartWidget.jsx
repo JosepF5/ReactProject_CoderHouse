@@ -1,16 +1,18 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useCartContext } from "../../context/CartContext";
 
 const CartWidget = () => {
-  const [contador, setContador] = useState(0);
+  const { cartList } = useCartContext();
   return (
     <div>
-      <button
+      <Link
+        to='/cart'
         className="bg-transparent hover:border-transparent active:text-gray-600"
-        onClick={() => setContador(contador + 1)}
       >
         <i className="fa-solid fa-cart-shopping p-2"></i>
-      </button>
-      <span>{contador}</span>
+      </Link>
+      <span>{cartList.length|0}</span>
     </div>
   );
 };

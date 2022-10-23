@@ -40,7 +40,7 @@ const products = [
       "El sensor óptico HERO de 12 000 ppp de próxima generación ofrece un rendimiento de juego, una precisión y una eficiencia energética inigualables",
     price: 409,
     picture:
-      "https://oechsle.vteximg.com.br/arquivos/ids/8946429-1500-1500/image-682b6c3279e44495b17b7046d0a97bda.jpg?v=637896580209330000",
+      "https://dtj8xnxpygn9a.cloudfront.net/wp-content/uploads/2019/11/PERFIL-WEB-24-02.png",
     stock: 18,
   }
 ];

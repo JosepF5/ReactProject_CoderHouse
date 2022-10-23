@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useCartContext } from "../../context/CartContext";
 
 const ItemDetail = ({ item }) => {
   const [count, setCount] = useState(1);
+  const { cartList, agregarAlCarrito,isInCart } = useCartContext();
+  const [goCart, setGoCart] = useState(isInCart(item));
+
+  const onAdd = (e) => {
+    e.preventDefault();
+    setGoCart(false);
+    agregarAlCarrito({ ...item, cantidad: item.price * count });
+  };
+
+  console.log(cartList);
+  console.log(isInCart(item));
   return (
     <div className="pt-6 pb-12 bg-gray-300">
       <div id="card" className="">
@@ -25,27 +37,48 @@ const ItemDetail = ({ item }) => {
                 {item.title}
               </h3>
               <p className="mt-2">{item.description}</p>
-              <label
-                htmlFor="points"
-                className="block text-md font-medium text-purple-600 dark:text-purple-600"
-              >
-                {count}
-              </label>
-              <input
-                onChange={(e) => setCount(e.target.value)}
-                type="range"
-                id="points"
-                name="points"
-                value={count}
-                min="1"
-                max={item.stock}
-                className="w-6/12 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-              ></input>
+              {goCart && (
+                <>
+                  <label
+                    htmlFor="points"
+                    className="block text-md font-medium text-purple-600 dark:text-purple-600"
+                  >
+                    {count}
+                  </label>
+                  <input
+                    onChange={(e) => setCount(e.target.value)}
+                    type="range"
+                    id="points"
+                    name="points"
+                    value={count}
+                    min="1"
+                    max={item.stock}
+                    className="w-6/12 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                  ></input>
+                </>
+              )}
+
               <div className="mt-4">
-                <Link to="/cart" className="bg-green-600 m-2 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
-                  Comprar
+                {goCart && (
+                  <span className="text-md font-medium text-purple-600 dark:text-purple-600">
+                    {`S/ ${item.price * count} soles`}
+                  </span>
+                )}
+                <Link
+                  to="#"
+                  className={
+                    goCart
+                      ? "bg-green-600 m-2 hover:bg-green-800 text-white font-bold py-2 px-4 rounded"
+                      : "bg-gray-200 m-2 pointer-events-none text-gray-500 font-bold py-2 px-4 rounded"
+                  }
+                  onClick={(e) => onAdd(e)}
+                >
+                  {goCart ? "Comprar" : "Comprado"}
                 </Link>
-                <Link to="/" className="bg-blue-500 m-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <Link
+                  to="/"
+                  className="bg-blue-500 m-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
                   Volver
                 </Link>
               </div>
