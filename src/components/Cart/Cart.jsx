@@ -1,15 +1,42 @@
 import React from "react";
 import { useCartContext } from "../../context/CartContext";
+import swal from "sweetalert";
 const Cart = () => {
   const { cartList, borrarItem, precioTotal, borrarCarrito } = useCartContext();
   const handleProduct = (e, index) => {
     e.preventDefault();
-    borrarItem(index);
+    swal({
+      title: "Estas seguro?",
+      text: "Tendrás que volverlo a comprar",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Se ha eliminado tu compra", {
+          icon: "success",
+        });
+        borrarItem(index);
+      }
+    });
   };
 
   const handleProducts = (e) => {
     e.preventDefault();
-    borrarCarrito();
+    swal({
+      title: "Estas seguro?",
+      text: "Tendrás que rehacer tus compras",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Se ha vaciado el carrito.", {
+          icon: "success",
+        });
+        borrarCarrito();
+      }
+    });
   };
 
   return (
@@ -30,7 +57,7 @@ const Cart = () => {
                 className="bg-red-500 hover:bg-red-700 p-2 rounded"
                 onClick={(e) => handleProduct(e, item.id)}
               >
-                <i class="fa-solid fa-trash text-white"></i>
+                <i className="fa-solid fa-trash text-white"></i>
               </button>
             </div>
           ))}
@@ -39,7 +66,7 @@ const Cart = () => {
             className="bg-red-500 hover:bg-red-700 p-2 rounded text-white font-semibold"
             onClick={(e) => handleProducts(e)}
           >
-            Cancelar <i class="fa-solid fa-trash"></i>
+            Cancelar <i className="fa-solid fa-trash"></i>
           </button>
         </div>
       ) : (
