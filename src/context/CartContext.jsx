@@ -54,24 +54,6 @@ const CartContextProvider = ({ children }) => {
     localStorage.setItem("cartList", "[]");
   };
 
-  const handleProducts = (e) => {
-    e.preventDefault();
-    swal({
-      title: "Estas seguro?",
-      text: "Tendrás que rehacer tus compras",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        swal("Se ha vaciado el carrito.", {
-          icon: "success",
-        });
-        borrarCarrito();
-      }
-    });
-  };
-
   return (
     <CartContext.Provider
       value={{
@@ -82,7 +64,6 @@ const CartContextProvider = ({ children }) => {
         borrarItem,
         isInCart,
         getItems,
-        handleProducts,
       }}
     >
       {children}
