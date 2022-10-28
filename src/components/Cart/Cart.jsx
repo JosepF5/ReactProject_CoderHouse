@@ -1,9 +1,9 @@
-import React from "react";
+import React,{useState} from "react";
 import { useCartContext } from "../../context/CartContext";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
 const Cart = () => {
-  const { cartList, borrarItem, precioTotal, borrarCarrito } = useCartContext();
+  const { getItems, borrarItem, precioTotal, borrarCarrito } = useCartContext();
   const handleProduct = (e, index) => {
     e.preventDefault();
     swal({
@@ -42,9 +42,10 @@ const Cart = () => {
 
   return (
     <div className="p-8">
-      {cartList.length != 0 ? (
+      <h1 className="m-4" style={{ fontFamily: "'Permanent Marker', cursive" }}>Carrito de compras</h1>
+      {getItems().length != 0 ? (
         <div>
-          {cartList.map((item, index) => (
+          {getItems().map((item, index) => (
             <div
               key={index}
               className="flex justify-between items-center m-8 bg-gray-100 text-purple-600 rounded p-2"
@@ -69,17 +70,16 @@ const Cart = () => {
           >
             Cancelar <i className="fa-solid fa-trash"></i>
           </button>
-          <button
-            className="bg-green-500 hover:bg-green-700 p-2 rounded text-white font-semibold m-5"
-            
-          >
+          <button className="bg-green-500 hover:bg-green-700 p-2 rounded text-white font-semibold m-5">
             <Link to="/payment">
               Pagar <i className="fa-sharp fa-solid fa-credit-card"></i>
             </Link>
           </button>
         </div>
       ) : (
-        "Carrito vacío... por el momento 👀"
+        <h1 style={{ fontFamily: "'Permanent Marker', cursive" }}>
+          Carrito vacío... por el momento 👀
+        </h1>
       )}
     </div>
   );

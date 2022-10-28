@@ -1,57 +1,121 @@
-import React from "react";
+import React, { useState } from "react";
+import { useCartContext } from "../../context/CartContext";
+import { collection, addDoc } from "firebase/firestore";
+import { getFirestore, Timestamp } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
+import Swal from "sweetalert2";
+import Loader from "../Loader/Loader";
 
 const Form = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isLoading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { getItems, precioTotal, borrarCarrito } = useCartContext();
+  const handleInfo = async (e) => {
+    e.preventDefault();
+    if (name && email && phone) {
+      setLoading(false);
+      const firestoreDB = getFirestore();
+      const docRef = await addDoc(collection(firestoreDB, "compras"), {
+        buyer: { name: name, email: email, phone: phone },
+        date: Timestamp.fromDate(new Date()),
+        items: getItems(),
+        total: precioTotal(),
+      });
+      swal({
+        title: "Compra realizada!",
+        text: `Tu numero de orden es: ${docRef.id}.`,
+        icon: "success",
+        button: "Volver a la tienda",
+      }).then(() => {
+        navigate("/");
+        borrarCarrito();
+      });
+      setLoading(true);
+      return;
+    }
+    Swal.fire({
+      title: "Registro incompleto",
+      html: "Por favor, ingrese los campos faltantes",
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false,
+    });
+  };
   return (
-    <form className="text-left bg-white p-8 rounded text-gray-200">
-      <div class="relative z-0 mb-6 w-full group">
-        <input
-          type="text"
-          name="floating_email"
-          id="floating_email"
-          class="block py-2.5 px-0 w-full text-sm dark:text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          placeholder=" "
-          required
-        />
-        <label
-          for="floating_email"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-            Nombre
-        </label>
-      </div>
-      <div class="relative z-0 mb-6 w-full group">
-        <input
-          type="email"
-          name="floating_password"
-          id="floating_password"
-          class="block py-2.5 px-0 w-full text-sm dark:text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          placeholder=" "
-          required
-        />
-        <label
-          for="floating_password"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Email
-        </label>
-      </div>
-      <div class="relative z-0 mb-6 w-full group">
-        <input
-          type="number"
-          name="repeat_password"
-          id="floating_repeat_password"
-          class="block py-2.5 px-0 w-full text-sm dark:text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          placeholder=" "
-          required
-        />
-        <label
-          for="floating_repeat_password"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Celular
-        </label>
-      </div>
-    </form>
+    <>
+      {isLoading ? (
+        <form className="text-left bg-white p-8 rounded text-gray-200">
+          <div class="relative z-0 mb-6 w-full group">
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm dark:text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Nombre
+            </label>
+          </div>
+          <div class="relative z-0 mb-6 w-full group">
+            <input
+              type="email"
+              name="floating_password"
+              id="floating_password"
+              class="block py-2.5 px-0 w-full text-sm dark:text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label
+              for="floating_password"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Email
+            </label>
+          </div>
+          <div class="relative z-0 mb-6 w-full group">
+            <input
+              type="number"
+              name="repeat_password"
+              id="floating_repeat_password"
+              class="block py-2.5 px-0 w-full text-sm dark:text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+            <label
+              for="floating_repeat_password"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Celular
+            </label>
+          </div>
+          <div className="text-center">
+            <button
+              className="bg-green-500 hover:bg-green-700 p-2 rounded text-white font-semibold m-5"
+              onClick={(e) => handleInfo(e)}
+            >
+              Realizar pago <i className="fa-sharp fa-solid fa-credit-card"></i>
+            </button>
+          </div>
+        </form>
+      ) : (
+        <Loader />
+      )}
+    </>
   );
 };
 

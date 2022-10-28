@@ -13,12 +13,12 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyD2P8ZDG6NC_xphhnzPtef2DEzyCXm29eg",
-  authDomain: "reactproject-coderhouse.firebaseapp.com",
+  apiKey: process.env.REACT_APP_APIKEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   projectId: "reactproject-coderhouse",
-  storageBucket: "reactproject-coderhouse.appspot.com",
-  messagingSenderId: "941493410886",
-  appId: "1:941493410886:web:0aabeed02a56ee2641be47",
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 // Initialize Firebase
@@ -38,11 +38,21 @@ export const getProductos = async () => {
   });
 };
 
+export const getCategories = async () => {
+  const colecciones = collection(firestoreDB, "categorias");
+  const categories = await getDocs(colecciones);
+  return categories.docs.map((doc) => {
+    return {
+      ...doc.data(),
+      id: doc.id,
+    };
+  });
+};
+
 export const getProductosByCategory = async (category) => {
   const colecciones = collection(firestoreDB, "productos");
   const queryItem = query(colecciones, where("category", "==", category));
   const products = await getDocs(queryItem);
-
   return products.docs.map((doc) => {
     return {
       ...doc.data(),
@@ -52,14 +62,14 @@ export const getProductosByCategory = async (category) => {
 };
 
 export const getProductoById = async (id) => {
-    const colecciones = collection(firestoreDB,"productos");
-    const itemRef = doc(colecciones, id);
-    const product = await getDoc(itemRef);
-
-    
-        return {
-        ...product.data(),
-        id: product.id
-        }
-    
+  const colecciones = collection(firestoreDB, "productos");
+  const itemRef = doc(colecciones, id);
+  const product = await getDoc(itemRef);
+  if (product.data()) {
+    return {
+      ...product.data(),
+      id: product.id,
+    };
+  }
+  return false;
 };

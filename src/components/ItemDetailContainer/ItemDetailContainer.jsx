@@ -3,6 +3,7 @@ import ItemDetail from "../ItemDetail/ItemDetail";
 import { useParams } from "react-router-dom";
 import { getProductoById } from "../../config/getFirestoreApp";
 import Loader from "../Loader/Loader";
+import Error from "../Error/Error";
 const ItemDetailContainer = () => {
   const [item, setItem] = useState({}); 
   const [isLoading, setLoading] = useState(false);
@@ -14,13 +15,16 @@ const ItemDetailContainer = () => {
       .catch((err) => console.log(err))
       .finally(() => setLoading(true));
   }, []);
-
   return (
     <div>
       {isLoading ? (
-        <>
-        <h1 className="my-8"style={{fontFamily: "'Permanent Marker', cursive"}}>Detalles</h1>
-        <ItemDetail item={item} /></>
+        item ?(
+          <>
+          <h1 className="my-8" style={{fontFamily: "'Permanent Marker', cursive"}}>Detalles</h1>
+          <ItemDetail item={item} /></>
+        ) : (
+          <Error />
+        )
       ) : (
         <Loader />
       )}
