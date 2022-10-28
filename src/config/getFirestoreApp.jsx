@@ -11,6 +11,7 @@ import {
   Timestamp,
 } from "firebase/firestore/lite";
 
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyD2P8ZDG6NC_xphhnzPtef2DEzyCXm29eg",
@@ -27,8 +28,8 @@ const firestoreDB = getFirestore(app);
 
 export default firestoreDB;
 
-export const getProductos = async () => {
-  const colecciones = collection(firestoreDB, "productos");
+export const getCollections = async (name) => {
+  const colecciones = collection(firestoreDB, name);
   const products = await getDocs(colecciones);
   return products.docs.map((doc) => {
     return {
@@ -38,16 +39,14 @@ export const getProductos = async () => {
   });
 };
 
-export const getCategories = async () => {
-  const colecciones = collection(firestoreDB, "categorias");
-  const categories = await getDocs(colecciones);
-  return categories.docs.map((doc) => {
-    return {
-      ...doc.data(),
-      id: doc.id,
-    };
+export const addPayment=async (name,email,phone,items,total)=>{
+  return await addDoc(collection(firestoreDB, "compras"), {
+    buyer: { name: name, email: email, phone: phone },
+    date: Timestamp.fromDate(new Date()),
+    items: items,
+    total: total,
   });
-};
+}
 
 export const getProductosByCategory = async (category) => {
   const colecciones = collection(firestoreDB, "productos");

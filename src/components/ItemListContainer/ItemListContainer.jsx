@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ItemList from "../ItemList/ItemList";
 import {
-  getProductos,
+  getCollections,
   getProductosByCategory,
 } from "../../config/getFirestoreApp";
 import Loader from "../Loader/Loader";
@@ -25,7 +25,7 @@ const ItemListContainer = (props) => {
         .finally(() => setLoading(true));
     } else {
       setGreet(props.greeting);
-      getProductos()
+      getCollections("productos")
         .then((res) => setItems(res))
         .catch((err) => console.log(err))
         .finally(() => setLoading(true));

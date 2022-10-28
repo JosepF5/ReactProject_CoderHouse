@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useCartContext } from "../../context/CartContext";
-import { collection, addDoc } from "firebase/firestore";
-import { getFirestore, Timestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import Swal from "sweetalert2";
 import Loader from "../Loader/Loader";
+import { addPayment } from "../../config/getFirestoreApp";
 
 const Form = () => {
   const [name, setName] = useState("");
@@ -13,18 +12,38 @@ const Form = () => {
   const [phone, setPhone] = useState("");
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { getItems, precioTotal, borrarCarrito } = useCartContext();
+  const { getItems, precioTotal, borrarCarrito } =
+    useCartContext();
+  const handleCancel = (e) => {
+    e.preventDefault();
+    swal({
+      title: "Estas seguro?",
+      text: "Tendrás que rehacer tus compras",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Se ha vaciado el carrito.", {
+          icon: "success",
+        });
+        borrarCarrito();
+        navigate("/");
+      }
+    });
+  };
+
   const handleInfo = async (e) => {
     e.preventDefault();
     if (name && email && phone) {
       setLoading(false);
-      const firestoreDB = getFirestore();
-      const docRef = await addDoc(collection(firestoreDB, "compras"), {
-        buyer: { name: name, email: email, phone: phone },
-        date: Timestamp.fromDate(new Date()),
-        items: getItems(),
-        total: precioTotal(),
-      });
+      const docRef = await addPayment(
+        name,
+        email,
+        phone,
+        getItems(),
+        precioTotal()
+      );
       swal({
         title: "Compra realizada!",
         text: `Tu numero de orden es: ${docRef.id}.`,
@@ -104,6 +123,12 @@ const Form = () => {
             </label>
           </div>
           <div className="text-center">
+            <button
+              className="bg-red-500 hover:bg-red-700 p-2 rounded text-white font-semibold"
+              onClick={(e) => handleCancel(e)}
+            >
+              Cancelar <i className="fa-solid fa-trash"></i>
+            </button>
             <button
               className="bg-green-500 hover:bg-green-700 p-2 rounded text-white font-semibold m-5"
               onClick={(e) => handleInfo(e)}

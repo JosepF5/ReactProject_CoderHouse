@@ -10,6 +10,7 @@ const ItemDetail = ({ item }) => {
   const onAdd = (e) => {
     e.preventDefault();
     setGoCart(false);
+    swal("Producto comprado!", "Podrás visualizarlo en el carrito de compras!", "success");
     agregarAlCarrito({ ...item, cantidad: item.price * count });
   };
 
@@ -56,7 +57,7 @@ const ItemDetail = ({ item }) => {
                 </>
               )}
 
-              <div className="mt-4">
+              <div className="mt-4 flex">
                 {goCart && (
                   <span className="text-md font-medium text-purple-600 dark:text-purple-600">
                     {`S/ ${item.price * count} soles`}
