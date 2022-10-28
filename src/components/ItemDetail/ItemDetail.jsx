@@ -4,7 +4,7 @@ import { useCartContext } from "../../context/CartContext";
 
 const ItemDetail = ({ item }) => {
   const [count, setCount] = useState(1);
-  const { cartList, agregarAlCarrito,isInCart } = useCartContext();
+  const { cartList, agregarAlCarrito, isInCart } = useCartContext();
   const [goCart, setGoCart] = useState(isInCart(item));
 
   const onAdd = (e) => {
@@ -13,8 +13,8 @@ const ItemDetail = ({ item }) => {
     agregarAlCarrito({ ...item, cantidad: item.price * count });
   };
 
-  console.log(cartList);
-  console.log(isInCart(item));
+  /* console.log(cartList);
+  console.log(isInCart(item)); */
   return (
     <div className="pt-6 pb-12 bg-gray-300">
       <div id="card" className="">
@@ -73,7 +73,15 @@ const ItemDetail = ({ item }) => {
                   }
                   onClick={(e) => onAdd(e)}
                 >
-                  {goCart ? "Comprar" : "Comprado"}
+                  {goCart ? (
+                    <>
+                      Agregar <i className="fa-solid fa-cart-shopping"></i>
+                    </>
+                  ) : (
+                    <>
+                      Agregado <i className="fa-solid fa-cart-flatbed"></i>
+                    </>
+                  )}
                 </Link>
                 <Link
                   to="/"

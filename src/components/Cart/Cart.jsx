@@ -1,6 +1,7 @@
 import React from "react";
 import { useCartContext } from "../../context/CartContext";
 import swal from "sweetalert";
+import { Link } from "react-router-dom";
 const Cart = () => {
   const { cartList, borrarItem, precioTotal, borrarCarrito } = useCartContext();
   const handleProduct = (e, index) => {
@@ -67,6 +68,14 @@ const Cart = () => {
             onClick={(e) => handleProducts(e)}
           >
             Cancelar <i className="fa-solid fa-trash"></i>
+          </button>
+          <button
+            className="bg-green-500 hover:bg-green-700 p-2 rounded text-white font-semibold m-5"
+            
+          >
+            <Link to="/payment">
+              Pagar <i className="fa-sharp fa-solid fa-credit-card"></i>
+            </Link>
           </button>
         </div>
       ) : (

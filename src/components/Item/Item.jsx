@@ -1,17 +1,22 @@
-import React from "react";
+import React,{ useState} from "react";
 import { Link } from "react-router-dom";
+import { useCartContext } from "../../context/CartContext";
 const Item = ({ item }) => {
+  const { isInCart } = useCartContext();
+  const [cart,setCart]=useState(isInCart(item))
+  /* console.log(cart) */
   return (
     <div className="w-full max-w-sm bg-white rounded-lg border p-5 border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+      {isInCart(item)?(<i className="text-green-400 fa-solid fa-cart-plus"></i>):(<i className="text-red-400 fas fa-cart-arrow-down"></i>)}
       <div className="flex flex-col items-center content-around pb-10">
         <img
           className="mb-3 w-32 h-24 rounded-full shadow-lg dark bg-black p-2"
           src={item.picture}
           alt="Bonnie image"
         />
-        <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-          {item.title.substring(0, 25)}
-          {item.title.length >= 25 && <span>...</span>}
+        <h5 className="mb-1 text-x font-medium text-gray-900 dark:text-white">
+          {item.title.substring(0, 30)}
+          {item.title.length >= 30 && <span>...</span>}
         </h5>
         <span className="text-sm text-purple-600 dark:text-purple-600">
           S/ {item.price} soles
@@ -22,6 +27,7 @@ const Item = ({ item }) => {
             to={`/detail/${item.id}`}
           >
             Detalles
+            <i className="fa-solid fa-circle-info mx-1"></i>
           </Link>
         </div>
       </div>

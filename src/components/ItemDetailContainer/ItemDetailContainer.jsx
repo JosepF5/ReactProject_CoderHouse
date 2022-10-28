@@ -18,7 +18,9 @@ const ItemDetailContainer = () => {
   return (
     <div>
       {isLoading ? (
-        <ItemDetail item={item} />
+        <>
+        <h1 className="my-8"style={{fontFamily: "'Permanent Marker', cursive"}}>Detalles</h1>
+        <ItemDetail item={item} /></>
       ) : (
         <Loader />
       )}

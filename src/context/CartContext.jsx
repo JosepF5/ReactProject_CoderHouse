@@ -21,24 +21,21 @@ const CartContextProvider = ({ children }) => {
     }
   };
 
-  const isInCart=(item)=>{
-    return !cartList.find(i => i.id === item.id);
-  }
+  const isInCart = (item) => {
+    return !cartList.find((i) => i.id === item.id);
+  };
 
   const precioTotal = () => {
-    return cartList.reduce(
-      (acum, prod) => acum + prod.cantidad,
-      0
-    );
+    return cartList.reduce((acum, prod) => acum + prod.cantidad, 0);
   };
 
   const borrarItem = (id) => {
     setCartList(cartList.filter((prod) => prod.id !== id));
   };
 
-  function borrarCarrito() {
+  const borrarCarrito = () => {
     setCartList([]);
-  }
+  };
 
   return (
     <CartContext.Provider
@@ -48,7 +45,7 @@ const CartContextProvider = ({ children }) => {
         borrarCarrito,
         precioTotal,
         borrarItem,
-        isInCart
+        isInCart,
       }}
     >
       {children}

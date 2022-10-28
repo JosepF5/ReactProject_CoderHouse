@@ -4,6 +4,8 @@ import NavBar from "./components/NavBar/NavBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ItemDetailContainer from "./components/ItemDetailContainer/ItemDetailContainer";
 import Cart from "./components/Cart/Cart";
+import Payment from "./components/Payment/Payment";
+import Error from "./components/Error/Error";
 import CartContextProvider  from './context/CartContext';
 
 function App() {
@@ -24,7 +26,7 @@ function App() {
             exact
             path="/category/:idCategory"
             element={
-              <ItemListContainer greeting="Al aire! Bienvenidos a nuestra tienda " />
+              <ItemListContainer greeting={"Al aire! Bienvenidos a nuestra tienda "} />
             }
           />
           <Route
@@ -36,6 +38,16 @@ function App() {
             exact
             path="/cart"
             element={<Cart />}
+          />
+          <Route
+            exact
+            path="/payment"
+            element={<Payment />}
+          />
+          <Route
+            exact
+            path="*"
+            element={<Error />}
           />
         </Routes>
       </div>

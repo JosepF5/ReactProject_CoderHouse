@@ -3,6 +3,10 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+.branding{
+  font-family: 'Anton', sans-serif;
 }
 
 .logo {

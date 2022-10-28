@@ -56,7 +56,7 @@ export const getProducts = () => {
 export const getProductsByCategory = (category) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-        console.log("category",products.filter((prod) => prod.category === category))
+        /* console.log("category",products.filter((prod) => prod.category === category)) */
       resolve(products.filter((prod) => prod.category === category));
     }, 500);
   });

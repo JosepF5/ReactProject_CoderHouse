@@ -5,7 +5,7 @@ import { useCartContext } from "../../context/CartContext";
 const CartWidget = () => {
   const { cartList } = useCartContext();
   return (
-    <div>
+    <div className="md:flex hover:text-purple-600 items-center">
       <Link
         to='/cart'
         className="bg-transparent hover:border-transparent active:text-gray-600"
