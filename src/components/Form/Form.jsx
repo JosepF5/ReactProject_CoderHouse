@@ -9,11 +9,11 @@ import { addPayment } from "../../config/getFirestoreApp";
 const Form = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [emailLoop, setEmailLoop] = useState("");
   const [phone, setPhone] = useState("");
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { getItems, precioTotal, borrarCarrito } =
-    useCartContext();
+  const { getItems, precioTotal, borrarCarrito } = useCartContext();
   const handleCancel = (e) => {
     e.preventDefault();
     swal({
@@ -35,34 +35,46 @@ const Form = () => {
 
   const handleInfo = async (e) => {
     e.preventDefault();
-    if (name && email && phone) {
-      setLoading(false);
-      const docRef = await addPayment(
-        name,
-        email,
-        phone,
-        getItems(),
-        precioTotal()
-      );
-      swal({
-        title: "Compra realizada!",
-        text: `Tu numero de orden es: ${docRef.id}.`,
-        icon: "success",
-        button: "Volver a la tienda",
-      }).then(() => {
-        navigate("/");
-        borrarCarrito();
+    if (!name && !email && !phone && !emailLoop) {
+      Swal.fire({
+        title: "Registro incompleto",
+        html: "Por favor, ingrese los campos faltantes",
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
       });
-      setLoading(true);
       return;
     }
-    Swal.fire({
-      title: "Registro incompleto",
-      html: "Por favor, ingrese los campos faltantes",
-      timer: 2000,
-      timerProgressBar: true,
-      showConfirmButton: false,
+    if (email != emailLoop && email && emailLoop) {
+      Swal.fire({
+        title: "Los emails no coinciden",
+        html: "Por favor, intente nuevamente",
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+      return;
+    }
+
+    setLoading(false);
+    const docRef = await addPayment(
+      name,
+      email,
+      phone,
+      getItems(),
+      precioTotal()
+    );
+    swal({
+      title: "Compra realizada!",
+      text: `Tu numero de orden es: ${docRef.id}.`,
+      icon: "success",
+      button: "Volver a la tienda",
+    }).then(() => {
+      navigate("/");
+      borrarCarrito();
     });
+    setLoading(true);
+    return;
   };
   return (
     <>
@@ -102,6 +114,24 @@ const Form = () => {
               class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Email
+            </label>
+          </div>
+          <div class="relative z-0 mb-6 w-full group">
+            <input
+              type="email"
+              name="floating_password"
+              id="floating_password"
+              class="block py-2.5 px-0 w-full text-sm dark:text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={emailLoop}
+              onChange={(e) => setEmailLoop(e.target.value)}
+              required
+            />
+            <label
+              for="floating_password"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Repeat Email
             </label>
           </div>
           <div class="relative z-0 mb-6 w-full group">
