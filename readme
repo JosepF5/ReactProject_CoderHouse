@@ -1,0 +1,15 @@
+Gif del funcionamiento: https://drive.google.com/file/d/1-Gcwu0nUUAn8N4IJ0Srgv8jPzn-fYEDh/view?usp=share_link 
+
+Deploy en firebase: https://reactproject-coderhouse.web.app/
+
+Deploy en vercel: https://fq5store.vercel.app/
+
+---PASOS DEL COMPILADO---
+1.- git clone https://github.com/JosepF5/ReactProject_CoderHouse.git
+2.- cd ReactProject_CoderHouse
+3.- npm install | yarn
+4.- Esperar...
+5.- npm run dev | yarn dev
+6.- Testea! 
+
+Hecho por Josep Palomino, estudiante de sistemas, un 29 de octubre del 2022
