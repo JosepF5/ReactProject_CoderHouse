@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
 const Item = ({ item }) => {
   const { isInCart } = useCartContext();
-  const [cart,setCart]=useState(isInCart(item))
-  /* console.log(cart) */
   return (
     <div className="w-full max-w-sm bg-white rounded-lg border p-5 border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
       {isInCart(item)?(<i className="text-green-400 fa-solid fa-cart-plus"></i>):(<i className="text-red-400 fas fa-cart-arrow-down"></i>)}

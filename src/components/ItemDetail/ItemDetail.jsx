@@ -10,7 +10,7 @@ const ItemDetail = ({ item }) => {
   const onAdd = (e) => {
     e.preventDefault();
     setGoCart(false);
-    swal("Producto comprado!", "Podrás visualizarlo en el carrito de compras!", "success");
+    swal("Producto añadido!", "Podrás visualizarlo en el carrito de compras!", "success");
     agregarAlCarrito({ ...item, cantidad: item.price * count });
   };
 
