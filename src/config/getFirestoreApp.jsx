@@ -4,13 +4,16 @@ import {
   doc,
   getDoc,
   addDoc,
+  setDoc,
   query,
   where,
   collection,
   getDocs,
   Timestamp,
-} from "firebase/firestore/lite";
-
+  documentId,
+  writeBatch,
+} from "firebase/firestore";
+import { getDatabase, ref, child, push, update } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -39,14 +42,21 @@ export const getCollections = async (name) => {
   });
 };
 
-export const addPayment=async (name,email,phone,items,total)=>{
-  return await addDoc(collection(firestoreDB, "compras"), {
+export const addPayment = async (name, email, phone, items, total) => {
+  console.log(items);
+  items.map(async (item) => {
+    const docRef = doc(firestoreDB, "productos", item.id);
+    console.log(item.stock,",,,,",item.stock-(item.cantidad/item.price))
+    await setDoc(docRef, {...item,stock:item.stock-(item.cantidad/item.price)})
+  });
+
+  return addDoc(collection(firestoreDB, "compras"), {
     buyer: { name: name, email: email, phone: phone },
     date: Timestamp.fromDate(new Date()),
     items: items,
     total: total,
   });
-}
+};
 
 export const getProductosByCategory = async (category) => {
   const colecciones = collection(firestoreDB, "productos");
