@@ -40,19 +40,20 @@ const ItemDetail = ({ item }) => {
                 {item.title}
               </h3>
               <p className="mt-2">{item.description}</p>
-              {goCart && (
-                <>
                   {item.stock ? (
                     <>
+                    {goCart && (<>
                       <span className="mt-2 text-md items-center font-medium text-purple-600 dark:text-purple-600">
                         {`S/ ${item.price * count} soles`}
                       </span>
+                      
                       <label
                         htmlFor="points"
                         className="block text-md font-medium text-purple-600 dark:text-purple-600"
                       >
                         {count}
                       </label>
+                      
                       <input
                         onChange={(e) => setCount(e.target.value)}
                         type="range"
@@ -62,7 +63,7 @@ const ItemDetail = ({ item }) => {
                         min="1"
                         max={item.stock}
                         className="w-6/12 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-                      ></input>
+                      ></input></>)}
                       <div className="mt-2 flex">
                         <Link
                           to="#"
@@ -106,8 +107,6 @@ const ItemDetail = ({ item }) => {
                       </Link>
                     </>
                   )}
-                </>
-              )}
             </div>
           </div>
         </div>

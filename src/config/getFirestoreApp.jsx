@@ -43,7 +43,6 @@ export const getCollections = async (name) => {
 };
 
 export const addPayment = async (name, email, phone, items, total) => {
-  console.log(items);
   items.map(async (item) => {
     const docRef = doc(firestoreDB, "productos", item.id);
     console.log(item.stock,",,,,",item.stock-(item.cantidad/item.price))

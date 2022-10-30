@@ -166,9 +166,8 @@ const NavBar = () => {
           </NavLink>
         </li>
         {categories.map((cat, index) => (
-          <li class="border-t md:border-none p-2">
+          <li class="border-t md:border-none p-2" key={index}>
             <NavLink
-              key={index}
               className="font-semibold branding text-black hover:text-purple-600 text-xl tracking-tight"
               to={`/category/${cat.nombre}`}
             >

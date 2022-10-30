@@ -26,7 +26,7 @@ function App() {
             exact
             path="/category/:idCategory"
             element={
-              <ItemListContainer greeting={"Al aire! Bienvenidos a nuestra tienda "} />
+              <ItemListContainer greeting="Al aire! Bienvenidos a nuestra tienda " />
             }
           />
           <Route

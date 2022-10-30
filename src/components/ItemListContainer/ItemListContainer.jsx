@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import ItemList from "../ItemList/ItemList";
+import { useAsync } from "../../hooks/useAsync";
 import {
   getCollections,
   getProductosByCategory,
@@ -8,39 +9,31 @@ import {
 import Loader from "../Loader/Loader";
 import Error from "../Error/Error";
 const ItemListContainer = (props) => {
-  const [items, setItems] = useState([]);
-  const [greet, setGreet] = useState(props.greeting);
   const { idCategory } = useParams();
-  const [isLoading, setLoading] = useState(false);
+  const getProductsFromFirestore = () =>
+    idCategory
+      ? getProductosByCategory(idCategory)
+      : getCollections("productos");
+  const {
+    data: items,
+    error,
+    isLoading,
+  } = useAsync(getProductsFromFirestore, [idCategory]);
 
-  useEffect(() => {
-    setLoading(false);
-    if (idCategory) {
-      setGreet(idCategory);
-      getProductosByCategory(idCategory)
-        .then((res) => {
-          setItems([...res]);
-        })
-        .catch((err) => console.log(err))
-        .finally(() => setLoading(true));
-    } else {
-      setGreet(props.greeting);
-      getCollections("productos")
-        .then((res) => setItems(res))
-        .catch((err) => console.log(err))
-        .finally(() => setLoading(true));
-    }
-  }, [idCategory]);
+  if (error) {
+    return <Error />;
+  }
+  const isValid = items !== undefined ? items.length : items;
   return (
     <div>
       {isLoading ? (
-        items.length ? (
+        isValid ? (
           <>
             <h1
-              className="m-8"
+              className="my-12"
               style={{ fontFamily: "'Permanent Marker', cursive" }}
             >
-              {greet}
+              {idCategory ? idCategory : props.greeting}
             </h1>
             <ItemList items={items} />
           </>
