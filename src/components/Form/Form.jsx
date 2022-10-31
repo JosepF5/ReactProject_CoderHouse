@@ -35,7 +35,7 @@ const Form = () => {
 
   const handleInfo = async (e) => {
     e.preventDefault();
-    if (!name && !email && !phone && !emailLoop) {
+    if (!name || !email || !phone || !emailLoop) {
       Swal.fire({
         title: "Registro incompleto",
         html: "Por favor, ingrese los campos faltantes",
